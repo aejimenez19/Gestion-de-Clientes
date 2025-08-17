@@ -2,6 +2,7 @@ package com.aejimenezdev.GestionDeClientes.Service.Impl;
 
 import com.aejimenezdev.GestionDeClientes.Dto.ClientRequestDto;
 import com.aejimenezdev.GestionDeClientes.Dto.ClientResponseDto;
+import com.aejimenezdev.GestionDeClientes.Exception.ClientException;
 import com.aejimenezdev.GestionDeClientes.Mapper.ClientMapper;
 import com.aejimenezdev.GestionDeClientes.Model.ClientModel;
 import com.aejimenezdev.GestionDeClientes.Repository.ClientRepository;
@@ -21,5 +22,12 @@ public class ClientServiceImpl implements ClientService {
         ClientModel client = clientMapper.toClientModel(clientRequestDto);
         ClientModel savedClient = clientRepository.save(client);
         return clientMapper.toClientResponse(savedClient);
+    }
+
+    @Override
+    public ClientResponseDto getClientById(Long id) {
+        ClientModel client = clientRepository.findById(id)
+                .orElseThrow(() -> new ClientException("Client not found with id: " + id));
+        return clientMapper.toClientResponse(client);
     }
 }

@@ -22,4 +22,10 @@ public class ClientController {
         ClientResponseDto savedClient = clientService.saveClient(clientRequestDto);
         return new ResponseEntity<>(savedClient, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientResponseDto> getClientById(@PathVariable Long id) {
+        ClientResponseDto client = clientService.getClientById(id);
+        return new ResponseEntity<>(client, HttpStatus.OK);
+    }
 }
