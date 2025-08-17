@@ -32,4 +32,16 @@ public class GlobalExeptionHandle {
     public ResponseEntity<String> handleGeneralException(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ClientException.class)
+    public ResponseEntity<ErrorResponseDto> handleClientException(ClientException ex) {
+
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                LocalDateTime.now(),
+                null
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }
