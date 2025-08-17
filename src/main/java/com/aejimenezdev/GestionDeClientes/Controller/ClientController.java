@@ -20,12 +20,12 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<ClientResponseDto> saveClient(@Valid @RequestBody ClientRequestDto clientRequestDto) {
         ClientResponseDto savedClient = clientService.saveClient(clientRequestDto);
-        return new ResponseEntity<>(savedClient, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(savedClient);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientResponseDto> getClientById(@PathVariable Long id) {
         ClientResponseDto client = clientService.getClientById(id);
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED).body(client);
     }
 }
