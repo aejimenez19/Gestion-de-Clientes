@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
+
 @Entity
 @Table(name = "clients")
 @Data
@@ -22,4 +24,5 @@ public class ClientModel {
     private String name;
     private String email;
     private String password;
+    private OffsetDateTime createdAt;
 }
