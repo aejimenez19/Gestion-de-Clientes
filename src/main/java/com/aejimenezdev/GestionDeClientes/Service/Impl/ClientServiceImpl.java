@@ -23,19 +23,19 @@ public class ClientServiceImpl implements ClientService {
     public ClientResponseDto saveClient(ClientRequestDto clientRequestDto) {
         ClientModel client = clientMapper.toClientModel(clientRequestDto);
         ClientModel savedClient = clientRepository.save(client);
-        return clientMapper.toClientResponse(savedClient);
+        return clientMapper.toClientResponseDto(savedClient);
     }
 
     @Override
     public ClientResponseDto getClientById(Long id) {
         ClientModel client = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientException("Client not found with id: " + id));
-        return clientMapper.toClientResponse(client);
+        return clientMapper.toClientResponseDto(client);
     }
 
     @Override
     public Page<ClientResponseDto> getAllClients(Pageable pageable) {
         Page<ClientModel> clients = clientRepository.findAll(pageable);
-        return clients.map(clientMapper::toClientResponse);
+        return clients.map(clientMapper::toClientResponseDto);
     }
 }
