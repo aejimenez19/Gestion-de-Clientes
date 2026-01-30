@@ -5,11 +5,13 @@ import com.aejimenezdev.GestionDeClientes.Dto.ClientResponseDto;
 import com.aejimenezdev.GestionDeClientes.Service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -27,5 +29,13 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> getClientById(@PathVariable Long id) {
         ClientResponseDto client = clientService.getClientById(id);
         return ResponseEntity.status(HttpStatus.CREATED).body(client);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Page<ClientResponseDto>> getAllClients(
+            @PageableDefault(size = 10, page = 0) Pageable pageable
+    ) {
+        Page<ClientResponseDto> clients = clientService.getAllClients(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(clients);
     }
 }

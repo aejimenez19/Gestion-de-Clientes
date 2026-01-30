@@ -8,6 +8,8 @@ import com.aejimenezdev.GestionDeClientes.Model.ClientModel;
 import com.aejimenezdev.GestionDeClientes.Repository.ClientRepository;
 import com.aejimenezdev.GestionDeClientes.Service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +31,11 @@ public class ClientServiceImpl implements ClientService {
         ClientModel client = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientException("Client not found with id: " + id));
         return clientMapper.toClientResponse(client);
+    }
+
+    @Override
+    public Page<ClientResponseDto> getAllClients(Pageable pageable) {
+        Page<ClientModel> clients = clientRepository.findAll(pageable);
+        return clients.map(clientMapper::toClientResponse);
     }
 }
