@@ -1,5 +1,6 @@
 package com.aejimenezdev.GestionDeClientes.Controller;
 
+import com.aejimenezdev.GestionDeClientes.Dto.ClientFilterRequestDto;
 import com.aejimenezdev.GestionDeClientes.Dto.ClientRequestDto;
 import com.aejimenezdev.GestionDeClientes.Dto.ClientResponseDto;
 import com.aejimenezdev.GestionDeClientes.Service.ClientService;
@@ -33,9 +34,11 @@ public class ClientController {
 
     @GetMapping()
     public ResponseEntity<Page<ClientResponseDto>> getAllClients(
-            @PageableDefault(size = 10, page = 0) Pageable pageable
+            @PageableDefault(size = 10, page = 0) Pageable pageable,
+            ClientFilterRequestDto filters
     ) {
-        Page<ClientResponseDto> clients = clientService.getAllClients(pageable);
+
+        Page<ClientResponseDto> clients = clientService.getAllClients(pageable, filters);
         return ResponseEntity.status(HttpStatus.OK).body(clients);
     }
 }
