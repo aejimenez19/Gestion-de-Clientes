@@ -26,4 +26,5 @@ public class ClientModel {
     private String password;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+    private Boolean isActive;
 }

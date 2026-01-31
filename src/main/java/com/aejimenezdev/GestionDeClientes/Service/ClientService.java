@@ -11,4 +11,5 @@ public interface ClientService {
     ClientResponseDto getClientById(Long id);
     Page<ClientResponseDto> getAllClients(Pageable pageable, ClientFilterRequestDto clientFilterRequestDto);
     ClientResponseDto updateClient(Long id, ClientRequestDto clientRequestDto);
+    void deleteClient(Long id);
 }

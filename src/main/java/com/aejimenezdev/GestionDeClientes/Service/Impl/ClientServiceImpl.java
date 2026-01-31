@@ -31,6 +31,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientResponseDto saveClient(ClientRequestDto clientRequestDto) {
         ClientModel client = clientMapper.toClientModel(clientRequestDto);
+        client.setIsActive(true);
         ClientModel savedClient = clientRepository.save(client);
         return clientMapper.toClientResponseDto(savedClient);
     }
@@ -39,6 +40,9 @@ public class ClientServiceImpl implements ClientService {
     public ClientResponseDto getClientById(Long id) {
         ClientModel client = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientException("Client not found with id: " + id));
+        if (client.getIsActive().equals(false)) {
+            throw new ClientNotFound();
+        }
         return clientMapper.toClientResponseDto(client);
     }
 
@@ -78,6 +82,7 @@ public class ClientServiceImpl implements ClientService {
                 );
             }
 
+            specification.add(criteriaBuilder.isTrue(root.get("isActive")));
             return criteriaBuilder.and(specification.toArray(new Predicate[0]));
         };
 
@@ -90,11 +95,23 @@ public class ClientServiceImpl implements ClientService {
         ClientModel client = clientRepository.findById(id)
                 .orElseThrow(ClientNotFound::new);
 
+        if (client.getIsActive().equals(false)) {
+            throw new ClientNotFound();
+        }
+
         client.setName(clientRequestDto.getName());
         client.setEmail(clientRequestDto.getEmail());
         client.setPassword(clientRequestDto.getPassword());
         client.setUpdatedAt(OffsetDateTime.now());
         ClientModel updatedClient = clientRepository.save(client);
         return clientMapper.toClientResponseDto(updatedClient);
+    }
+
+    @Override
+    public void deleteClient(Long id) {
+        ClientModel client = clientRepository.findById(id)
+                .orElseThrow(ClientNotFound::new);
+        client.setIsActive(false);
+        clientRepository.save(client);
     }
 }

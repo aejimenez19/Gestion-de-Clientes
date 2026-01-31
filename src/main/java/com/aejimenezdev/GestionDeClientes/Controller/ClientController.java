@@ -50,4 +50,10 @@ public class ClientController {
         ClientResponseDto updatedClient = clientService.updateClient(id, clientRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedClient);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
+        clientService.deleteClient(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
