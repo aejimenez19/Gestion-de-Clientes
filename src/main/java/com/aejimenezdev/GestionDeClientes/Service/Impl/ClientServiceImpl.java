@@ -1,9 +1,10 @@
 package com.aejimenezdev.GestionDeClientes.Service.Impl;
 
-        import com.aejimenezdev.GestionDeClientes.Dto.ClientFilterRequestDto;
+import com.aejimenezdev.GestionDeClientes.Dto.ClientFilterRequestDto;
 import com.aejimenezdev.GestionDeClientes.Dto.ClientRequestDto;
 import com.aejimenezdev.GestionDeClientes.Dto.ClientResponseDto;
 import com.aejimenezdev.GestionDeClientes.Exception.ClientException;
+import com.aejimenezdev.GestionDeClientes.Exception.ClientNotFound;
 import com.aejimenezdev.GestionDeClientes.Mapper.ClientMapper;
 import com.aejimenezdev.GestionDeClientes.Model.ClientModel;
 import com.aejimenezdev.GestionDeClientes.Repository.ClientRepository;
@@ -77,10 +78,23 @@ public class ClientServiceImpl implements ClientService {
                 );
             }
 
-           return criteriaBuilder.and(specification.toArray(new Predicate[0]));
+            return criteriaBuilder.and(specification.toArray(new Predicate[0]));
         };
 
         Page<ClientModel> clients = clientRepository.findAll(specs, pageable);
         return clients.map(clientMapper::toClientResponseDto);
+    }
+
+    @Override
+    public ClientResponseDto updateClient(Long id, ClientRequestDto clientRequestDto) {
+        ClientModel client = clientRepository.findById(id)
+                .orElseThrow(ClientNotFound::new);
+
+        client.setName(clientRequestDto.getName());
+        client.setEmail(clientRequestDto.getEmail());
+        client.setPassword(clientRequestDto.getPassword());
+        client.setUpdatedAt(OffsetDateTime.now());
+        ClientModel updatedClient = clientRepository.save(client);
+        return clientMapper.toClientResponseDto(updatedClient);
     }
 }

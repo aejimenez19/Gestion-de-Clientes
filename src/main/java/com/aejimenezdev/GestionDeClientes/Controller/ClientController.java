@@ -41,4 +41,13 @@ public class ClientController {
         Page<ClientResponseDto> clients = clientService.getAllClients(pageable, filters);
         return ResponseEntity.status(HttpStatus.OK).body(clients);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientResponseDto> updateClient(
+            @PathVariable Long id,
+            @Valid @RequestBody ClientRequestDto clientRequestDto
+    ) {
+        ClientResponseDto updatedClient = clientService.updateClient(id, clientRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedClient);
+    }
 }

@@ -44,4 +44,16 @@ public class GlobalExeptionHandle {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ClientNotFound.class)
+    public ResponseEntity<ErrorResponseDto> clientNotFound(ClientNotFound ex) {
+
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                LocalDateTime.now(),
+                null
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }

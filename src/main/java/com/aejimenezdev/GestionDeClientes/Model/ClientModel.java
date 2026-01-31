@@ -25,4 +25,5 @@ public class ClientModel {
     private String email;
     private String password;
     private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

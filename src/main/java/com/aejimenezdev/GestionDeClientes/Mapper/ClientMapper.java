@@ -16,6 +16,7 @@ public class ClientMapper {
                 .email(clientModel.getEmail())
                 .name(clientModel.getName())
                 .createdAt(clientModel.getCreatedAt())
+                .updatedAt(clientModel.getUpdatedAt())
                 .build();
     }
 
